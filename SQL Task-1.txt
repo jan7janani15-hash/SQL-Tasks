@@ -1,0 +1,264 @@
+USE librarydb;
+CREATE TABLE Books(
+book_id INT PRIMARY KEY,
+book_name VARCHAR(50),
+author VARCHAR(30),
+price DECIMAL(10,3)
+);
+CREATE TABLE Members(
+member_id INT PRIMARY KEY,
+member_name VARCHAR(50),
+city VARCHAR(30),
+phone VARCHAR(15)
+);
+CREATE TABLE Borrow(
+borrow_id INT PRIMARY KEY,
+book_id INT,
+member_id INT,
+borrow_data DATE 
+);
+ALTER TABLE Books
+ADD category VARCHAR(50);
+ALTER TABLE Books
+ADD quantity INT;
+ALTER TABLE Members
+ADD email VARCHAR(50);
+ALTER TABLE Borrow
+ADD return_date DATE;
+ALTER TABLE Books 
+RENAME COLUMN quantity TO stock_quantity;
+SELECT * FROM Books;
+SELECT * FROM Members;
+SELECT * FROM Borrow;
+ALTER TABLE Books
+DROP COLUMN email;
+
+
+INSERT INTO Books VALUES(1001,"AAA","Janani",579.56,"Adventure",15),
+(1002,"BBB","Sab",345.98,"Technology",45),
+(1003,"CCC","Sodhi",678.65,"Horror",35),
+(1004,"DDD","Evelin",567.76,"Music",18),
+(1005,"EEE","Nithya",789.65,"Travel",37),
+(1006,"FFF","Abi",876.54,"Leadership",13),
+(1007,"GGG","Infaa",311.15,"Communication",31),
+(1008,"HHH","Eshwari",345.89,"DataScience",54),
+(1009,"III","Paul",321.78,"Business",87),
+(1010,"JJJ","Muthu",890.78,"Thriller",90);
+INSERT INTO Members VALUES(10001,"A","Chennai",1234567890,"jan57@gmail.com"),
+(10002,"B","Madurai",6789065432,"nit90@gmail.com"),
+(10003,"C","Coimbatore",3456789043,"eve45@gmail.com"),
+(10004,"D","Trichy",6789056785,"sab87@gmail.com"),
+(10005,"E","Salem",3456213456,"swa89@gmail.com"),
+(10006,"F","Tirunelveli",5674356732,"paul21@gmail.com"),
+(10007,"G","Thoothukudi",9870657895,"eshwari98@gmail.com"),
+(10008,"H","Erode",6754678943,"jann77@gmail.com");
+SELECT * FROM Members;
+DELETE FROM Members 
+WHERE  member_id=101;
+DELETE FROM Members 
+WHERE  member_id=102;
+DELETE FROM Members 
+WHERE  member_id=103;
+DELETE FROM Members 
+WHERE  member_id=104;
+DELETE FROM Members 
+WHERE  member_id=105;
+INSERT INTO Borrow VALUES(1,1001,10001,'2026-09-01','2026-09-11'),
+(2,1002,10002,'2026-09-02','2026-09-12'),
+(3,1003,10003,'2026-09-03','2026-09-13'),
+(4,1004,10004,'2026-09-04','2026-09-14'),
+(5,1005,10005,'2026-09-05','2026-09-15'),
+(6,1006,10006,'2026-09-06','2026-09-16'),
+(7,1007,10007,'2026-09-07','2026-09-17'),
+(8,1008,10008,'2026-09-08','2026-09-18'),
+(9,1009,10001,'2026-09-09','2026-09-19'),
+(10,1010,10002,'2026-09-10','2026-09-20');
+SELECT * FROM Borrow;
+INSERT INTO Books VALUES(1012,"KKK","Priya",980.87,"Artificial Intelligence",65);
+DELETE FROM Books
+WHERE  book_id=1011;
+SELECT * FROM Books;
+INSERT INTO Members VALUES(10009,"I","Vallioor",8907689054,"priya30@gmail.com");
+INSERT INTO Borrow VALUES(11,1011,10011,'2026-10-01','2026-10-10');
+UPDATE Books
+SET price=750.00
+WHERE book_id=1003;
+UPDATE Books
+SET price=price*1.10
+WHERE category='Technology';
+UPDATE Books
+SET stock_quantity=stock_quantity+5;
+UPDATE Members
+SET city='Chennai'
+WHERE member_id=10009;
+UPDATE Members
+SET email='priya123@gmail.com'
+WHERE member_id=10009;
+UPDATE Books
+SET category='AI'
+WHERE book_id=1012;
+UPDATE Borrow
+SET return_date='2026-10-20'
+WHERE borrow_id=10;
+SELECT * FROM Books;
+DELETE FROM Books
+WHERE book_id=106;
+DELETE FROM Members
+WHERE member_id=10009;
+DELETE FROM Borrow
+WHERE borrow_id=10;
+DELETE FROM Books
+WHERE stock_quantity=0;
+
+
+SELECT * FROM Books;
+SELECT book_name,author
+FROM Books;
+SELECT book_name,category,price
+FROM Books;
+SELECT * FROM Books
+WHERE price>500;
+SELECT * FROM Books
+WHERE price<500;
+SELECT * FROM Books
+WHERE price BETWEEN 300 AND 800;
+SELECT * FROM Books
+WHERE category='Technology';
+SELECT * FROM Books
+WHERE author='Priya';
+SELECT * FROM Books
+WHERE book_name LIKE 'S';
+SELECT * FROM Books
+WHERE book_name LIKE 'SQL';
+SELECT * FROM Books
+WHERE category IN('Technology','Education');
+SELECT * FROM Books
+WHERE price!=500;
+SELECT * FROM Books
+WHERE stock_quantity>10;
+SELECT * FROM Books
+WHERE stock_quantity BETWEEN 5 AND 15;
+
+USE librarydb;
+CREATE USER 'library_user'@'localhost'
+IDENTIFIED BY 'library123';
+GRANT SELECT ON librarydb.Books
+TO 'library_user'@'localhost';
+GRANT INSERT ON librarydb.Books
+TO 'library_user'@'localhost';
+GRANT UPDATE ON librarydb.Books
+TO 'library_user'@'localhost';
+SHOW GRANTS FOR 'library_user'@'localhost';
+REVOKE INSERT ON librarydb.Books
+FROM 'library_user'@'localhost';
+REVOKE UPDATE ON librarydb.Books
+FROM 'library_user'@'localhost';
+GRANT SELECT ON librarydb.*
+TO 'library_user'@'localhost';
+REVOKE SELECT ON librarydb.Books
+FROM 'library_user'@'localhost';
+SHOW GRANTS FOR 'library_user'@'localhost';
+
+
+SELECT * FROM Books
+ORDER BY price ASC;
+SELECT * FROM Books
+ORDER BY price DESC;
+SELECT * FROM Books
+ORDER BY book_name ASC;
+SELECT * FROM Books
+ORDER BY category ASC, price ASC;
+SELECT * FROM Books
+ORDER BY price DESC
+LIMIT 3;
+SELECT * FROM Books
+ORDER BY price ASC
+LIMIT 3;
+SELECT * FROM Books
+ORDER BY stock_quantity DESC
+LIMIT 5;
+SELECT * FROM Members
+ORDER BY member_name ASC
+LIMIT 5; 
+SELECT * FROM Borrow
+ORDER BY borrow_data DESC
+LIMIT 5;
+
+
+SELECT COUNT(*) AS total_books
+FROM Books;
+SELECT COUNT(*) AS total_members
+FROM Members;
+SELECT COUNT(*) AS total_borrow_records
+FROM Borrow;
+SELECT SUM(stock_quantity) AS total_stock
+FROM Books;
+SELECT SUM(price) AS total_price
+FROM Books;
+SELECT AVG(price) AS average_price
+FROM Books;
+SELECT MAX(price) AS highest_price
+FROM Books;
+SELECT MIN(price) AS lowest_price
+FROM Books;
+SELECT MAX(price)-MIN(price) AS price_difference
+FROM Books;
+SELECT AVG(stock_quantity) AS average_stock
+FROM Books;
+
+SELECT * FROM Books;
+SELECT category,COUNT(*) AS total_books
+FROM Books
+GROUP BY category;
+SELECT category,AVG(price) AS average_price
+FROM Books
+GROUP BY category;
+SELECT category,MAX(price) AS highest_price
+FROM Books
+GROUP BY category;
+SELECT category,MIN(price) AS lowest_price
+FROM Books
+GROUP BY category;
+SELECT category,SUM(stock_quantity) AS total_stock
+FROM Books
+GROUP BY category;
+SELECT category,SUM(price*stock_quantity) AS total_value
+FROM Books
+GROUP BY category;
+SELECT category,COUNT(*) AS total_books
+FROM Books
+GROUP BY category
+HAVING COUNT(*)>2;
+SELECT category,AVG(price) AS average_price
+FROM Books
+GROUP BY category
+HAVING AVG(price)>500;
+SELECT author,COUNT(*) AS total_books
+FROM Books
+GROUP BY author;
+SELECT author,AVG(price) AS average_price
+FROM Books
+GROUP BY author;
+
+
+SELECT category,COUNT(*) AS total_books
+FROM Books
+GROUP BY category
+HAVING COUNT(*)>2;
+SELECT category,AVG(price) AS average_price
+FROM Books
+GROUP BY category
+HAVING AVG(price)>500;
+SELECT author,COUNT(*) AS total_books
+FROM Books
+GROUP BY author
+HAVING COUNT(*)>1;
+SELECT category,SUM(stock_quantity) AS total_stock
+FROM Books
+GROUP BY category
+HAVING SUM(stock_quantity)>20;
+SELECT author, AVG(price) AS average_price
+FROM Books
+GROUP BY author
+HAVING AVG(price)>600;
+USE librarydb;
